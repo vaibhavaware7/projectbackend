@@ -1,0 +1,3 @@
+//User table queries
+##
+ insert into users values(default,'vaibz@gmail','vaibhav','123','ADMIN');

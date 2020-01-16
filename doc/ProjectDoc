@@ -1,0 +1,104 @@
+Anti-Trafficking Portal::
+Technology(Angular + Spring RestFull Web Services + MySql )
+Database Design:
+Tables:(POJOS)
+1: User
+ -uid(integer primary key auto increament)
+ -name(varchar(30))
+ -email(varchar(30))
+ -password(varchar(20))
+ -role(varchar(20))..Enum(ADMIN,NGO,POLICE)
+ -address addr (One to One)
+ -ngo_id(One to One)...NgoInfo Table
+ -pol_id(One to One)..PoliceInfo Table
+ -msgs(One to many( Embedded Collection Type))..Inbox table
+ -photo_id((blob) One To One Photo Table))
+
+2: Victim
+ -appNo(pk)
+ -name(varchar(30))
+ -age(int)
+ -gender(varchar(20))
+ -height(double)
+ -dob(java.util.Date)
+ -Address addr(One to One)
+ -complainant_no(varchar)
+ -missingFrom(Date)
+ -status(Enum..(MISSING,FOUND))
+ -bgroup(varchar)
+ -photo_id((blob) One To One Photo Table))
+ 
+3: NgoInfo
+ -n_id(pk)
+ -ngo_name(varcahr)
+ -Address addr(One To One)..Address Table
+ 
+4: PoliceInfo
+ -dept_id(pk)
+ -name(varchar)
+ -Address addr(One to One )..Address Table
+ 
+5: Address
+ -add_id(pk)
+ -User_id(One to One)..User table  ..foreign key
+ -Victim_id(One to One)..victim table..foreign key
+ -ngo_id(One to One)..ngoInfo table..foreign key
+ -pol_id(One to One)..PoliceInfo table..foreign key
+ -city(varchar)
+ -state(varchar)
+ -country(varchar)
+ -contact(varchar)
+
+6: Photos
+ - id(pk)
+ - img(blob)
+ - uid(..foreign key) user table
+ - v_id(..foreign key) victim table
+
+7:Inbox
+ -u_id(Many to One)..foreign key User Table
+ -msg()
+
+---------------------------------------------------------------------------------------------------------------
+ ##REST CONTROLLERS 
+	
+#1 User Controller
+	-methods:
+		- for login
+		- registeration of police and ngo users	
+#2 Admin Controller
+	-methods:
+		- list all users
+		- list all victims(cases)
+		- add user
+		- remove user 
+		- add/remove victims
+		- update user
+		- send message to users
+		- handle registering request from users	
+		- list all messages
+#3 Police Controller
+	-methods:
+		- list all victims(cases)
+		- find victim by id/name/dob or any combos
+		- file a complaint(add victims)
+		- remove a complaint (not actually removing it..making its status found)
+		- update victims
+		- update profile (his own)
+		- send message to NGO or admin()
+		- list all messages 
+
+#4 Ngo Controller
+	-method:
+		- list all victims(cases)
+		- find victim by id/name/dob or any combos
+		- update profile (his own)
+		- send message to NGO or admin() 
+		- list all messages 
+------------------------------------------------------------------------------------------------------------------
+#DAO LAYER
+	#1 User Dao .... normal dao implementing interface
+	#2 Admin Dao .... normal dao implementing interface
+	#3 Police Dao .... normal dao implementing interface	
+	#4 NGO Dao .... only interface and implementation using SPRING DATA JPA
+--------------------------------------------------------------------------------------------------------------
