@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "users")
 public class User 
@@ -13,8 +15,10 @@ public class User
 	private String email;
 	private String password;
 	private UserRole role;
+	private VerificationStatus stat;
 	private Address addId;
 	private Photo usrPhoto;
+	@JsonIgnore
 	private List<Message> messages;
 	public User() 
 	{
@@ -89,6 +93,15 @@ public class User
 	public void setMessages(List<Message> messages) {
 		this.messages = messages;
 	}
+	@Enumerated(EnumType.STRING)
+	@Column(name = "v_status",length = 10)
+	public VerificationStatus getStat() {
+		return stat;
+	}
+	public void setStat(VerificationStatus stat) {
+		this.stat = stat;
+	}
+	
 	//Convinence methods
 	
 	

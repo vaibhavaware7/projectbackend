@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "victims")
@@ -16,11 +19,15 @@ public class Victim
 	private Double height;
 	private String bgrp;
 	private Status status;
-
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date dob;
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date missingDate;
 	private String complainantNo;
+	@JsonIgnore
 	private Address addrid;
+	@JsonIgnore
 	private Photo phoId;
 	
 	public Victim() {
@@ -141,5 +148,11 @@ public class Victim
 	public void setPhoId(Photo phoId) {
 		this.phoId = phoId;
 	}
+	//Convinence methods
 	
+	public void addAddress(Address addr)
+	{
+		this.setAddrid(addr);
+		addr.setVicId(this);
+	}
 }
