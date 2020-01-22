@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.daos.IPoliceDao;
 import com.app.pojos.Address;
+import com.app.pojos.God;
+import com.app.pojos.Message;
 import com.app.pojos.Victim;
 import com.app.services.IPoliceService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,11 +34,13 @@ public class PoliceController
 	
 	
 	@PostMapping("/filecomplaint")
-	public ResponseEntity<Boolean> fileComplaint(@RequestParam String vic,@RequestParam String adr )
+	public ResponseEntity<Boolean> fileComplaint(@RequestBody God god )
 	{
 		try {
-			Victim victim = new ObjectMapper().readValue(vic,Victim.class);
-			Address addr = new ObjectMapper().readValue(adr,Address.class);
+			Victim victim = new Victim(god.getName(),god.getAge(),god.getGendor(),
+							god.getHeight(),god.getBgrp(),god.getDob(),god.getMissingDate(),
+							god.getComplainantNo());
+			Address addr = new Address(god.getCity(),god.getState(),god.getCountry(),god.getPhoneno());
 			pserv.fileComplaint(victim,addr);
 			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 		}
@@ -62,8 +66,9 @@ public class PoliceController
 	public ResponseEntity<?> getVictimByName(@PathVariable String name)
 	{
 		try {
-			 Victim vic = pserv.getVictimByName(name);
-				return new ResponseEntity<Victim>(vic, HttpStatus.OK);
+			 God god = pserv.getVictimByName(name);
+			 	
+				return new ResponseEntity<God>(god, HttpStatus.OK);
 									
 		}
 		catch(Exception e) {
@@ -72,5 +77,20 @@ public class PoliceController
 			
 		}
 		
+	}
+	@GetMapping("/msgs/{usrId}")
+	public ResponseEntity<?> getAllMessages(@PathVariable Integer usrId)
+	{
+		try 
+		{
+			List<Message> msglist = pserv.getAllMessages(usrId);
+			return new ResponseEntity<List<Message>>(msglist,HttpStatus.OK);
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
 }

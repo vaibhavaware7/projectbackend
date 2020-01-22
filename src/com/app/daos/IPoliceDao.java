@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.app.pojos.Address;
+import com.app.pojos.God;
 import com.app.pojos.Victim;
 
 public interface IPoliceDao {
@@ -12,6 +13,6 @@ public interface IPoliceDao {
 
 	List<Victim> getAllCases();
 
-	Victim getVictimByName(String name);
+	God getVictimByName(String name);
 	
 }

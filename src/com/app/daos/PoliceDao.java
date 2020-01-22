@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.app.pojos.Address;
+import com.app.pojos.God;
 import com.app.pojos.Status;
 import com.app.pojos.Victim;
 
@@ -23,9 +24,10 @@ public class PoliceDao implements IPoliceDao
 	@Override
 	public void fileComplaint(Victim vic, Address addr) 
 	{
+		sf.getCurrentSession().persist(vic);
 		vic.addAddress(addr);
 		vic.setStatus(Status.MISSING);
-		sf.getCurrentSession().persist(vic);
+		
 	}
 
 	
@@ -37,11 +39,14 @@ public class PoliceDao implements IPoliceDao
 
 
 	@Override
-	public Victim getVictimByName(String name) 
+	public God getVictimByName(String name) 
 	{
 		String jpql = "select v from Victim v where v.name=:nm";
-		return sf.getCurrentSession().createQuery(jpql, Victim.class).setParameter("nm",name).getSingleResult();
+		 Victim vic = sf.getCurrentSession().createQuery(jpql, Victim.class).setParameter("nm",name).getSingleResult();
+		 God god = new God(vic.getName(),vic.getAge(),vic.getGendor(),vic.getHeight(),
+				 vic.getBgrp(),vic.getStatus(),vic.getDob(),vic.getMissingDate(),vic.getComplainantNo(),
+				 vic.getAddrid().getCity(),vic.getAddrid().getState(),vic.getAddrid().getCountry(),vic.getAddrid().getPhoneno());
+		 god.setAppNo(vic.getAppNo());
+		 return god;
 	}
-	 
-	
 }

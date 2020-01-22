@@ -10,7 +10,7 @@
 	  private Integer add_id;
       private String city;
       private String state;
-  private String country;
+      private String country;
   private String phoneno; 
   private User userid; 
   private Victim vicId;
