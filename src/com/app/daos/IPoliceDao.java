@@ -14,5 +14,9 @@ public interface IPoliceDao {
 	List<Victim> getAllCases();
 
 	God getVictimByName(String name);
+
+	Boolean closeCase(Integer appNo);
+
+	void updateProfile(Integer usrId, God god);
 	
 }

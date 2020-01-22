@@ -16,7 +16,6 @@ public class God
 	private Status status;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date dob;
-
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date missingDate;
 	private String complainantNo;
@@ -24,6 +23,49 @@ public class God
 	private String state;
     private String country;
 	private String phoneno;
+	private VerificationStatus stat;
+	private String password;
+	private String newPassword;
+	private Integer uid;
+	private String email;
+	private Integer ngoId;
+	private String ngoname;
+
+	private String ngouseremail;
+	private String fromuseremail;
+	private String messagebody;
+	private UserRole role;
+	
+	public UserRole getRole() {
+		return role;
+	}
+	public void setRole(UserRole role) {
+		this.role = role;
+	}
+	public VerificationStatus getStat() {
+		return stat;
+	}
+	public void setStat(VerificationStatus stat) {
+		this.stat = stat;
+	}
+	public String getNgouseremail() {
+		return ngouseremail;
+	}
+	public void setNgouseremail(String ngouseremail) {
+		this.ngouseremail = ngouseremail;
+	}
+	public String getFromuseremail() {
+		return fromuseremail;
+	}
+	public void setFromuseremail(String fromuseremail) {
+		this.fromuseremail = fromuseremail;
+	}
+	public String getMessagebody() {
+		return messagebody;
+	}
+	public void setMessagebody(String messagebody) {
+		this.messagebody = messagebody;
+	}
 	public String getName() {
 		return name;
 	}
@@ -124,7 +166,56 @@ public class God
 	}
 	public void setAppNo(Integer appNo) {
 		this.appNo = appNo;
+	}
+	public Integer getUid() {
+		return uid;
+	}
+	public void setUid(Integer uid) {
+		this.uid = uid;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Integer getNgoId() {
+		return ngoId;
+	}
+	public void setNgoId(Integer ngoId) {
+		this.ngoId = ngoId;
+	}
+	public String getNgoname() {
+		return ngoname;
+	}
+	public void setNgoname(String ngoname) {
+		this.ngoname = ngoname;
 	} 
-		
+	public God() 
+	{
+		// TODO Auto-generated constructor stub
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getNewPassword() {
+		return newPassword;
+	}
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+	public God(String name, String city, String state, String phoneno, String password, Integer uid, String email) {
+		super();
+		this.name = name;
+		this.city = city;
+		this.state = state;
+		this.phoneno = phoneno;
+		this.password = password;
+		this.uid = uid;
+		this.email = email;
+	}	
 	
 }

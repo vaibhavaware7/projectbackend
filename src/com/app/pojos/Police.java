@@ -9,6 +9,7 @@ public class Police
 	private Integer deptId;
 	private String name;
 	private Address poaddrId;
+	private User pouserid;
 	public Police() {
 		System.out.println("police ctor");
 	}
@@ -42,6 +43,14 @@ public class Police
 	}
 	public void setPoaddrId(Address poaddrId) {
 		this.poaddrId = poaddrId;
+	}
+	@OneToOne
+	@JoinColumn(name="userid")
+	public User getPouserid() {
+		return pouserid;
+	}
+	public void setPouserid(User pouserid) {
+		this.pouserid = pouserid;
 	}
 	
 }

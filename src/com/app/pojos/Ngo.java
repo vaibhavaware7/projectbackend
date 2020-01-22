@@ -9,6 +9,7 @@ public class Ngo
 	private Integer ngoId;
 	private String ngoname;
 	private Address ngoAddrId;
+	private User userid;
 	public Ngo() {
 		System.out.println("in NGO ctor");
 	}
@@ -37,6 +38,14 @@ public class Ngo
 	}
 	public void setNgoAddrId(Address ngoAddrId) {
 		this.ngoAddrId = ngoAddrId;
+	}
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	public User getUserid() {
+		return userid;
+	}
+	public void setUserid(User userid) {
+		this.userid = userid;
 	}
 	
 }

@@ -16,7 +16,13 @@ public class User
 	private String password;
 	private UserRole role;
 	private VerificationStatus stat;
+	@JsonIgnore
 	private Address addId;
+	@JsonIgnore
+	private Ngo ngoid;
+	@JsonIgnore
+	private Police poId;
+	@JsonIgnore
 	private Photo usrPhoto;
 	@JsonIgnore
 	private List<Message> messages;
@@ -101,10 +107,32 @@ public class User
 	public void setStat(VerificationStatus stat) {
 		this.stat = stat;
 	}
+	@OneToOne(mappedBy = "userid")
+	public Ngo getNgoid() {
+		return ngoid;
+	}
+	public void setNgoid(Ngo ngoid) {
+		this.ngoid = ngoid;
+	}
+	@OneToOne(mappedBy = "pouserid")
+	public Police getPoId() {
+		return poId;
+	}
+	public void setPoId(Police poId) {
+		this.poId = poId;
+	}
 	
 	//Convinence methods
-	
-	
+	public void addMessage(Message m)
+	{
+		this.messages.add(m);
+		m.setUsrId(this);
+	}
+	public void addAddress(Address a)
+	{
+		this.setAddId(a);
+		a.setUserid(this);
+	}
 	
 			
 }

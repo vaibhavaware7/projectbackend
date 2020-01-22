@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.pojos.God;
+import com.app.pojos.Status;
 import com.app.pojos.User;
+import com.app.pojos.UserRole;
+import com.app.pojos.VerificationStatus;
 import com.app.services.IUserService;
 
 @RestController
@@ -32,19 +36,26 @@ public class UserController
 		System.out.println("in init of User Controller");
 	}
 	@PostMapping("/login")
-	public User getUser(@RequestBody User u)
+	public ResponseEntity<?> getUser(@RequestBody User u)
 	{
 		try
 		{
 			User user = serv.validateUser(u.getEmail(),u.getPassword());
-			return user;
+			God god = new God(user.getName(),user.getAddId().getCity(),
+					user.getAddId().getState(),user.getAddId().getPhoneno(),
+					user.getPassword(),user.getUid(),user.getEmail());
+			god.setStat(VerificationStatus.V);
+			god.setRole(user.getRole());
+			 return new ResponseEntity<God>(god,HttpStatus.OK);
+			
 					
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return null;
-				
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			
+						
 		}
 			
 	}

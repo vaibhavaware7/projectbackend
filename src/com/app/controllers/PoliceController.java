@@ -1,8 +1,6 @@
 package com.app.controllers;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,13 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.daos.IPoliceDao;
 import com.app.pojos.Address;
 import com.app.pojos.God;
 import com.app.pojos.Message;
 import com.app.pojos.Victim;
 import com.app.services.IPoliceService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/police")
@@ -32,7 +28,19 @@ public class PoliceController
 	@Autowired
 	private IPoliceService pserv;
 	
-	
+	@PostMapping("/updateuser/{usrId}")
+	public ResponseEntity<Boolean> updateuser(@PathVariable Integer usrId,@RequestBody God god )
+	{
+		try {
+			 pserv.updateUser(usrId,god);
+			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return new ResponseEntity<Boolean>(false,HttpStatus.NOT_IMPLEMENTED);
+		}
+	}
 	@PostMapping("/filecomplaint")
 	public ResponseEntity<Boolean> fileComplaint(@RequestBody God god )
 	{
@@ -92,5 +100,15 @@ public class PoliceController
 
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
+	}
+	@GetMapping("/close/{appNo}")
+	public ResponseEntity<Boolean> closeCase(@PathVariable Integer appNo)
+	{
+			Boolean stat = pserv.closeCase(appNo);
+			 if(stat == true)	
+				return new ResponseEntity<Boolean>(stat, HttpStatus.OK);
+			return new ResponseEntity<Boolean>(stat, HttpStatus.OK);
+			
+			
 	}
 }

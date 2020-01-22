@@ -19,5 +19,9 @@ public interface IPoliceService {
 	Address getAddressOfVictim(Victim vic);
 
 	List<Message> getAllMessages(Integer usrId);
+
+	Boolean closeCase(Integer appNo);
+
+	void updateUser(Integer usrId, God god);
 	
 }

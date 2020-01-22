@@ -53,5 +53,17 @@ public class PoliceService implements IPoliceService
 		return mdao.getAllMessages(usrId);
 	}
 
+	@Override
+	public Boolean closeCase(Integer appNo) {
+		// TODO Auto-generated method stub
+		return pdao.closeCase(appNo);
+	}
+
+	@Override
+	public void updateUser(Integer usrId, God god) 
+	{
+		pdao.updateProfile(usrId,god);
+	}
+
 	
 }
