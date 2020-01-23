@@ -19,4 +19,10 @@ public class UserService implements IUserService
 	{
 		return dao.validateUser(email, pass);
 	}
+
+	@Override
+	public void registerUser(God god) {
+		// TODO Auto-generated method stub
+		dao.registerUser(god);
+	}
 }

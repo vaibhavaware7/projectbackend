@@ -28,6 +28,43 @@ public class AdminController
 	@Autowired
 	private IAdminDao dao;
 	
+	@GetMapping("/user/{name}")
+	public ResponseEntity<?> getUserByName(@PathVariable String name)
+	{
+		try {
+			 God god = dao.getUserByName(name);
+			return new ResponseEntity<God>(god,HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+	@GetMapping("/verify/{uid}")
+	public ResponseEntity<Boolean> verifyUser(@PathVariable Integer uid)
+	{
+		try {
+			 dao.verifyUser(uid);
+			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Boolean>(false,HttpStatus.NO_CONTENT);
+		}
+	}
+	@GetMapping("/requests")
+	public ResponseEntity<?> getAllRequests()
+	{
+		try {
+			List<User> users= dao.getAllRequests();
+			return new ResponseEntity<List<User>>(users,HttpStatus.OK);
+		} 
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
 	@PostMapping("/addept")
 	public ResponseEntity<Boolean> addDept(@RequestBody God god)
 	{

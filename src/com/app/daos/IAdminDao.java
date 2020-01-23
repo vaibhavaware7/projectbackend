@@ -26,4 +26,10 @@ public interface IAdminDao
 
 	void addDept(God god);
 
+	List<User> getAllRequests();
+
+	void verifyUser(Integer uid);
+
+	God getUserByName(String name);
+
 }

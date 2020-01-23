@@ -36,6 +36,43 @@ public class God
 	private String messagebody;
 	private UserRole role;
 	
+	private String deptname;
+	private String deptcity;
+	private String deptstate;
+	private String deptcountry;
+	private String deptphoneno;
+	
+	
+	public String getDeptname() {
+		return deptname;
+	}
+	public void setDeptname(String deptname) {
+		this.deptname = deptname;
+	}
+	public String getDeptcity() {
+		return deptcity;
+	}
+	public void setDeptcity(String deptcity) {
+		this.deptcity = deptcity;
+	}
+	public String getDeptstate() {
+		return deptstate;
+	}
+	public void setDeptstate(String deptstate) {
+		this.deptstate = deptstate;
+	}
+	public String getDeptcountry() {
+		return deptcountry;
+	}
+	public void setDeptcountry(String deptcountry) {
+		this.deptcountry = deptcountry;
+	}
+	public String getDeptphoneno() {
+		return deptphoneno;
+	}
+	public void setDeptphoneno(String deptphoneno) {
+		this.deptphoneno = deptphoneno;
+	}
 	public UserRole getRole() {
 		return role;
 	}
@@ -216,6 +253,25 @@ public class God
 		this.password = password;
 		this.uid = uid;
 		this.email = email;
-	}	
+	}
+	public God(String name, String city, String state, String country, String phoneno, VerificationStatus stat,
+			Integer uid, String email, String deptname, String deptcity, String deptstate, String deptcountry,
+			String deptphoneno) {
+		super();
+		this.name = name;
+		this.city = city;
+		this.state = state;
+		this.country = country;
+		this.phoneno = phoneno;
+		this.stat = stat;
+		this.uid = uid;
+		this.email = email;
+		this.deptname = deptname;
+		this.deptcity = deptcity;
+		this.deptstate = deptstate;
+		this.deptcountry = deptcountry;
+		this.deptphoneno = deptphoneno;
+	}
+
 	
 }

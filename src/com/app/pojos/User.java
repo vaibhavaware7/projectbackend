@@ -138,6 +138,16 @@ public class User
 		this.setAddId(null);
 		a.setUserid(null);
 	}
+	public void addPoliceStation(Police pol)
+	{
+		this.setPoId(pol);
+		pol.setPouserid(this);
+		
+	}
+	public void addNgoOfUser(Ngo ngo) {
+		this.setNgoid(ngo);
+		ngo.setUserid(this);
+	}
 	
 			
 }

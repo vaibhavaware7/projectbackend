@@ -114,5 +114,57 @@ public class AdminDao implements IAdminDao
 		
 		
 	}
+	
+	@Override
+	public List<User> getAllRequests() {
+		String jpql ="select u from User u where u.stat=:st";
+		
+		return sf.getCurrentSession().createQuery(jpql, User.class).setParameter("st",VerificationStatus.NV).getResultList();
+	}
+	@Override
+	public void verifyUser(Integer uid) {
+	 User user=	sf.getCurrentSession().get(User.class,uid);
+	 user.setStat(VerificationStatus.V);
+	}
+	@Override
+	public God getUserByName(String name) {
+		String jpql = "select u from User u where u.name=:nm";
+		User user =  sf.getCurrentSession().createQuery(jpql, User.class).setParameter("nm",name).getSingleResult();
+		if(user.getRole().equals(UserRole.NGO))
+		{
+			God god = new God(user.getName(),user.getAddId().getCity(),user.getAddId().getState(),
+					user.getAddId().getCountry(),user.getAddId().getPhoneno(),
+					user.getStat(),user.getUid(),user.getEmail(),
+					user.getNgoid().getNgoname(),user.getNgoid().getNgoAddrId().getCity(),
+					user.getNgoid().getNgoAddrId().getState(),
+					user.getNgoid().getNgoAddrId().getCountry(),user.getNgoid().getNgoAddrId().getPhoneno());
+			god.setRole(UserRole.NGO);
 
+			return god;
+		}
+		else if(user.getRole().equals(UserRole.POLICE))
+		{
+			God god = new God(user.getName(),user.getAddId().getCity(),user.getAddId().getState(),
+					user.getAddId().getCountry(),user.getAddId().getPhoneno(),
+					user.getStat(),user.getUid(),user.getEmail(),
+					user.getPoId().getName(),user.getPoId().getPoaddrId().getCity(),
+					user.getPoId().getPoaddrId().getState(),
+					user.getPoId().getPoaddrId().getCountry(),user.getPoId().getPoaddrId().getPhoneno());
+			god.setRole(UserRole.POLICE);
+
+			return god;
+			
+		}
+		else
+		{
+			God god = new God();
+			god.setName(user.getName());
+			god.setEmail(user.getEmail());
+			god.setRole(UserRole.ADMIN);
+			god.setCity(user.getAddId().getCity());
+			god.setState(user.getAddId().getState());
+			god.setPhoneno(user.getAddId().getPhoneno());
+			return god;
+		}
+	}
 }

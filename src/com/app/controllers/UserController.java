@@ -44,7 +44,7 @@ public class UserController
 			God god = new God(user.getName(),user.getAddId().getCity(),
 					user.getAddId().getState(),user.getAddId().getPhoneno(),
 					user.getPassword(),user.getUid(),user.getEmail());
-			god.setStat(VerificationStatus.V);
+			god.setStat(user.getStat());
 			god.setRole(user.getRole());
 			 return new ResponseEntity<God>(god,HttpStatus.OK);
 			
@@ -59,5 +59,24 @@ public class UserController
 		}
 			
 	}
-	
+	@PostMapping("/register")
+	public ResponseEntity<Boolean> registerUser(@RequestBody God god)
+	{
+		try
+		{
+			serv.registerUser(god);
+			 return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+			
+					
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return new ResponseEntity<Boolean>(false,HttpStatus.NO_CONTENT);
+			
+						
+		}
+			
+	}
+
 }
