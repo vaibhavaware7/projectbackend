@@ -133,6 +133,11 @@ public class User
 		this.setAddId(a);
 		a.setUserid(this);
 	}
+	public void removeAddress(Address a)
+	{
+		this.setAddId(null);
+		a.setUserid(null);
+	}
 	
 			
 }

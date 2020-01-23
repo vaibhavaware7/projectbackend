@@ -47,5 +47,10 @@ public class Ngo
 	public void setUserid(User userid) {
 		this.userid = userid;
 	}
+	public void addAddress(Address a)
+	{
+		this.setNgoAddrId(a);
+		a.setNgoKey(this);
+	}
 	
 }

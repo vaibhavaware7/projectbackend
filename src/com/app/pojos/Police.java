@@ -52,5 +52,9 @@ public class Police
 	public void setPouserid(User pouserid) {
 		this.pouserid = pouserid;
 	}
-	
+	public void addAddress(Address addr)
+	{
+		this.setPoaddrId(addr);
+		addr.setPolId(this);
+	}
 }
