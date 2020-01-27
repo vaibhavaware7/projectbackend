@@ -52,5 +52,10 @@ public class Ngo
 		this.setNgoAddrId(a);
 		a.setNgoKey(this);
 	}
+	public void removeAddress(Address a)
+	{
+		this.setNgoAddrId(null);
+		a.setNgoKey(null);
+	}
 	
 }

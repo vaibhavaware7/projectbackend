@@ -155,4 +155,10 @@ public class Victim
 		this.setAddrid(addr);
 		addr.setVicId(this);
 	}
+	
+	public void addPhoto(Photo pho)
+	{
+		this.setPhoId(pho);
+		pho.setvId(this);
+	}
 }

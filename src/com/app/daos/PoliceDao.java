@@ -1,17 +1,17 @@
 package com.app.daos;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.pojos.Address;
 import com.app.pojos.God;
+import com.app.pojos.Photo;
 import com.app.pojos.Status;
 import com.app.pojos.User;
 import com.app.pojos.Victim;
@@ -23,21 +23,34 @@ public class PoliceDao implements IPoliceDao
 	private SessionFactory sf;
 
 	@Override
-	public void fileComplaint(Victim vic, Address addr) 
+	public void fileComplaint(Victim vic, Address addr ,MultipartFile image) throws IOException 
 	{
 		sf.getCurrentSession().persist(vic);
 		vic.addAddress(addr);
 		vic.setStatus(Status.MISSING);
 		
+		Photo pho = new Photo();
+		pho.setImg(image.getBytes());
+		sf.getCurrentSession().persist(pho);
+		vic.addPhoto(pho);
+		
 	}
 
 	
-	  @Override public List<Victim> getAllCases()
+	  @Override public List<God> getAllCases()
 	  {
 		  String jpql ="select v from Victim v where v.status=:stat";
-		  return sf.getCurrentSession().createQuery(jpql,
+		   List<Victim> list = sf.getCurrentSession().createQuery(jpql,
 	  Victim.class).setParameter("stat",Status.MISSING).getResultList();
-	  
+		   List<God> godlist= new ArrayList<God>();
+		   for (Victim victim : list)
+		   {
+			   God god= new God(victim.getAppNo(),victim.getName(),victim.getAge(), victim.getGendor(),victim.getHeight(),victim.getBgrp(),victim.getDob(),victim.getMissingDate(),victim.getComplainantNo(),victim.getAddrid().getCity(),victim.getAddrid().getState(),victim.getAddrid().getCountry(),
+					   victim.getAddrid().getPhoneno(),victim.getPhoId().getImg());
+			   god.setStatus(victim.getStatus());
+			   godlist.add(god);
+		   }
+		   return godlist;
 	  }
 
 
@@ -50,6 +63,7 @@ public class PoliceDao implements IPoliceDao
 				 vic.getBgrp(),vic.getStatus(),vic.getDob(),vic.getMissingDate(),vic.getComplainantNo(),
 				 vic.getAddrid().getCity(),vic.getAddrid().getState(),vic.getAddrid().getCountry(),vic.getAddrid().getPhoneno());
 		 god.setAppNo(vic.getAppNo());
+		 god.setImg(vic.getPhoId().getImg());
 		 return god;
 	}
 
@@ -71,22 +85,25 @@ public class PoliceDao implements IPoliceDao
 
 
 	@Override
-	public void updateProfile(Integer usrId, God god) 
+	public void updateProfile( God god) 
 	{
-		User user = sf.getCurrentSession().get(User.class,usrId);
+		User user = sf.getCurrentSession().get(User.class,god.getUid());
 		if(user != null)
 		{
 			user.setName(god.getName());
 			user.setEmail(god.getEmail());
+			user.getAddId().setCity(god.getCity());
+			user.getAddId().setCountry(god.getCountry());
+			user.getAddId().setPhoneno(god.getPhoneno());
 		}
-		String jpql = "select a from Address a where a.userid=:id";
-		Address address = sf.getCurrentSession().createQuery(jpql, Address.class).setParameter("id",usrId).getSingleResult();
-		if(address != null)
-		{
-			address.setCity(god.getCity());
-			address.setState(god.getState());
-			address.setPhoneno(god.getPhoneno());
-		}
+		
+		/*
+		 * String jpql = "select a from Address a where a.userid=:id"; Address address =
+		 * sf.getCurrentSession().createQuery(jpql,
+		 * Address.class).setParameter("id",user.getUid()).getSingleResult(); if(address
+		 * != null) { address.setCity(god.getCity()); address.setState(god.getState());
+		 * address.setPhoneno(god.getPhoneno()); }
+		 */
 				
 	}
 }

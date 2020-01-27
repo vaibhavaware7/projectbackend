@@ -32,4 +32,11 @@ public interface IAdminDao
 
 	God getUserByName(String name);
 
+	void removeUser(Integer uid);
+
+	God getUserByEmail(String email);
+
+	God getUserById(Integer uid);
+
+
 }

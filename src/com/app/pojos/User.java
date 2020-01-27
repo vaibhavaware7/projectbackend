@@ -144,10 +144,19 @@ public class User
 		pol.setPouserid(this);
 		
 	}
+	public void removePolice(Police po)
+	{
+		this.setPoId(null);
+		po.setPouserid(null);
+	}
 	public void addNgoOfUser(Ngo ngo) {
 		this.setNgoid(ngo);
 		ngo.setUserid(this);
 	}
-	
+	public void removeNgo(Ngo ngo)
+	{
+		this.setNgoid(null);
+		ngo.setUserid(null);
+	}
 			
 }

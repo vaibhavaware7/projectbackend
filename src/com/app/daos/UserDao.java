@@ -1,5 +1,7 @@
 package com.app.daos;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.app.pojos.Address;
 import com.app.pojos.God;
 import com.app.pojos.Ngo;
+import com.app.pojos.Photo;
 import com.app.pojos.Police;
 import com.app.pojos.User;
 import com.app.pojos.UserRole;
@@ -50,7 +53,7 @@ public class UserDao implements IUser
 			
 			pol.addAddress(poaddr);			
 		}
-		else
+		else if(god.getRole().equals(UserRole.NGO))
 		{
 			User user = new User(god.getName(),god.getEmail(),god.getPassword(),god.getRole());
 			user.setStat(VerificationStatus.NV);
@@ -70,6 +73,23 @@ public class UserDao implements IUser
 			ngo.addAddress(ngoaddr);		
 			
 		}
+		else
+		{
+			User user = new User(god.getName(),god.getEmail(),god.getPassword(),god.getRole());
+			user.setStat(VerificationStatus.V);
+			sf.getCurrentSession().persist(user);
+			Address usraddr = new Address(god.getCity(),god.getState(),god.getCountry(),god.getPhoneno());
+			sf.getCurrentSession().persist(usraddr);
+			user.addAddress(usraddr);
+		
+		}
+	}
+
+	@Override
+	public List<Photo> getAllPhotos() 
+	{
+		String jpql = "select p from Photo p";
+		return sf.getCurrentSession().createQuery(jpql,Photo.class).getResultList();
 	}
 
 }

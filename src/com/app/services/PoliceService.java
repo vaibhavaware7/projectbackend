@@ -1,11 +1,13 @@
 package com.app.services;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.daos.IMessageDao;
 import com.app.daos.IPoliceDao;
@@ -24,13 +26,13 @@ public class PoliceService implements IPoliceService
 	private IMessageDao mdao;
 
 	@Override
-	public void fileComplaint(Victim vic, Address addr) 
+	public void fileComplaint(Victim vic, Address addr,MultipartFile image) throws IOException
 	{
-		pdao.fileComplaint(vic,addr);
+		pdao.fileComplaint(vic,addr,image);
 	}
 
 	@Override
-	public List<Victim> getAllCases() 
+	public List<God> getAllCases() 
 	{
 		return pdao.getAllCases();
 	}
@@ -60,9 +62,9 @@ public class PoliceService implements IPoliceService
 	}
 
 	@Override
-	public void updateUser(Integer usrId, God god) 
+	public void updateUser( God god) 
 	{
-		pdao.updateProfile(usrId,god);
+		pdao.updateProfile(god);
 	}
 
 	

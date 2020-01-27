@@ -1,5 +1,7 @@
 package com.app.controllers;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.pojos.God;
+import com.app.pojos.Photo;
 import com.app.pojos.Status;
 import com.app.pojos.User;
 import com.app.pojos.UserRole;
@@ -35,6 +38,19 @@ public class UserController
 	{
 		System.out.println("in init of User Controller");
 	}
+	@GetMapping("/imgs")
+	public ResponseEntity<?> getAllPhotos()
+	{
+		try {
+			List<Photo> photos= serv.getAllPhotos();
+			return new ResponseEntity<List<Photo>>(photos,HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
 	@PostMapping("/login")
 	public ResponseEntity<?> getUser(@RequestBody User u)
 	{

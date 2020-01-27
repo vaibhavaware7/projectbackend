@@ -28,11 +28,37 @@ public class AdminController
 	@Autowired
 	private IAdminDao dao;
 	
-	@GetMapping("/user/{name}")
-	public ResponseEntity<?> getUserByName(@PathVariable String name)
+	@GetMapping("/users/{uid}")
+	public ResponseEntity<?> getUserById(@PathVariable Integer uid)
+	{
+		
+		try {
+			 God god = dao.getUserById(uid);
+			return new ResponseEntity<God>(god,HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+	@GetMapping("/reject/{uid}")
+	public ResponseEntity<Boolean> removeUser(@PathVariable Integer uid)
 	{
 		try {
-			 God god = dao.getUserByName(name);
+			 dao.removeUser(uid);
+			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Boolean>(false,HttpStatus.NO_CONTENT);
+		}
+	}
+	@GetMapping("/user/{email}")
+	public ResponseEntity<?> getUserByName(@PathVariable String email)
+	{
+		
+		try {
+			 God god = dao.getUserByEmail(email);
 			return new ResponseEntity<God>(god,HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Photo 
 {
 	private Integer pId;
-	private Byte[] img;
+	private byte[] img;
 	private User uId;
 	private Victim vId;
 	public Photo() {
@@ -24,10 +24,10 @@ public class Photo
 	}
 	@Lob
 	@Column(name = "img")
-	public Byte[] getImg() {
+	public byte[] getImg() {
 		return img;
 	}
-	public void setImg(Byte[] img) {
+	public void setImg(byte[] img) {
 		this.img = img;
 	}
 	@OneToOne

@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.pojos.Address;
 import com.app.pojos.God;
 import com.app.pojos.Message;
 import com.app.pojos.Victim;
 import com.app.services.IPoliceService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/police")
@@ -28,11 +30,11 @@ public class PoliceController
 	@Autowired
 	private IPoliceService pserv;
 	
-	@PostMapping("/updateuser/{usrId}")
-	public ResponseEntity<Boolean> updateuser(@PathVariable Integer usrId,@RequestBody God god )
+	@PostMapping("/updateuser")
+	public ResponseEntity<Boolean> updateuser(@RequestBody God god )
 	{
 		try {
-			 pserv.updateUser(usrId,god);
+			 pserv.updateUser(god);
 			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 		}
 		catch(Exception e)
@@ -42,14 +44,15 @@ public class PoliceController
 		}
 	}
 	@PostMapping("/filecomplaint")
-	public ResponseEntity<Boolean> fileComplaint(@RequestBody God god )
+	public ResponseEntity<Boolean> fileComplaint(@RequestParam(value="god") String god1,@RequestParam(value="image") MultipartFile image )
 	{
 		try {
+			God god = new ObjectMapper().readValue(god1,God.class);
 			Victim victim = new Victim(god.getName(),god.getAge(),god.getGendor(),
 							god.getHeight(),god.getBgrp(),god.getDob(),god.getMissingDate(),
 							god.getComplainantNo());
 			Address addr = new Address(god.getCity(),god.getState(),god.getCountry(),god.getPhoneno());
-			pserv.fileComplaint(victim,addr);
+			pserv.fileComplaint(victim,addr,image);
 			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 		}
 		catch(Exception e)
@@ -62,13 +65,13 @@ public class PoliceController
 	@GetMapping("/allcases")
 	public ResponseEntity<?> getAllCases()
 	{
-		List<Victim> cases = pserv.getAllCases();
+		List<God> cases = pserv.getAllCases();
 		if(cases.size() == 0)
 		{
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		
-		return new ResponseEntity<List<Victim>>(cases, HttpStatus.OK);
+		return new ResponseEntity<List<God>>(cases, HttpStatus.OK);
 	}
 	@GetMapping("/cases/{name}")
 	public ResponseEntity<?> getVictimByName(@PathVariable String name)

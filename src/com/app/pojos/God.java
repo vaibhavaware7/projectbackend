@@ -42,7 +42,33 @@ public class God
 	private String deptcountry;
 	private String deptphoneno;
 	
+	private byte[] img;
 	
+	public God(Integer appNo, String name, Integer age, Gendor gendor, Double height, String bgrp, Date dob,
+			Date missingDate, String complainantNo, String city, String state, String country, String phoneno,
+			byte[] img) {
+		super();
+		this.appNo = appNo;
+		this.name = name;
+		this.age = age;
+		this.gendor = gendor;
+		this.height = height;
+		this.bgrp = bgrp;
+		this.dob = dob;
+		this.missingDate = missingDate;
+		this.complainantNo = complainantNo;
+		this.city = city;
+		this.state = state;
+		this.country = country;
+		this.phoneno = phoneno;
+		this.img = img;
+	}
+	public byte[] getImg() {
+		return img;
+	}
+	public void setImg(byte[] img) {
+		this.img = img;
+	}
 	public String getDeptname() {
 		return deptname;
 	}

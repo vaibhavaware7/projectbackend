@@ -1,7 +1,10 @@
 package com.app.services;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.pojos.Address;
 import com.app.pojos.God;
@@ -10,9 +13,9 @@ import com.app.pojos.Victim;
 
 public interface IPoliceService {
 
-	void fileComplaint(Victim vic, Address addr);
+	void fileComplaint(Victim vic, Address addr, MultipartFile image) throws IOException;
 
-	List<Victim> getAllCases();
+	List<God> getAllCases();
 
 	God getVictimByName(String name);
 
@@ -22,6 +25,6 @@ public interface IPoliceService {
 
 	Boolean closeCase(Integer appNo);
 
-	void updateUser(Integer usrId, God god);
+	void updateUser(God god);
 	
 }

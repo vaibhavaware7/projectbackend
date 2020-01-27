@@ -57,4 +57,9 @@ public class Police
 		this.setPoaddrId(addr);
 		addr.setPolId(this);
 	}
+	public void removeAddress(Address add)
+	{
+		this.setPoaddrId(null);
+		add.setPolId(null);
+	}
 }
