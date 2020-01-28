@@ -34,4 +34,10 @@ public class UserService implements IUserService
 		// TODO Auto-generated method stub
 		return dao.getAllPhotos();
 	}
+
+	@Override
+	public Integer[] getDatapoints()  {
+		// TODO Auto-generated method stub
+		return dao.getDatapoints();
+	}
 }

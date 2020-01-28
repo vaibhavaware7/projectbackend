@@ -13,4 +13,5 @@ public interface IUserService
 	void registerUser(God god);
 
 	List<Photo> getAllPhotos();
+	Integer[] getDatapoints() ;
 }

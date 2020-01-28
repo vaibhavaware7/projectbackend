@@ -1,5 +1,6 @@
 package com.app.daos;
 
+import java.text.ParseException;
 import java.util.List;
 
 import com.app.pojos.God;
@@ -12,6 +13,7 @@ public interface IUser
 
 	void registerUser(God god);
 
-
 	List<Photo> getAllPhotos();
+	
+	Integer[] getDatapoints();
 }

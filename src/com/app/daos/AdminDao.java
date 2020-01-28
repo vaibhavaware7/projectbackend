@@ -226,7 +226,7 @@ public class AdminDao implements IAdminDao {
 					user.getNgoid().getNgoAddrId().getState(), user.getNgoid().getNgoAddrId().getCountry(),
 					user.getNgoid().getNgoAddrId().getPhoneno());
 			god.setRole(UserRole.NGO);
-
+			
 			return god;
 		} else if (user.getRole().equals(UserRole.POLICE)) {
 			God god = new God(user.getName(), user.getAddId().getCity(), user.getAddId().getState(),
@@ -235,7 +235,7 @@ public class AdminDao implements IAdminDao {
 					user.getPoId().getPoaddrId().getState(), user.getPoId().getPoaddrId().getCountry(),
 					user.getPoId().getPoaddrId().getPhoneno());
 			god.setRole(UserRole.POLICE);
-
+			
 			return god;
 
 		} else {
@@ -246,6 +246,7 @@ public class AdminDao implements IAdminDao {
 			god.setCity(user.getAddId().getCity());
 			god.setState(user.getAddId().getState());
 			god.setPhoneno(user.getAddId().getPhoneno());
+			
 			return god;
 		}
 
@@ -261,7 +262,7 @@ public class AdminDao implements IAdminDao {
 					user.getNgoid().getNgoAddrId().getState(), user.getNgoid().getNgoAddrId().getCountry(),
 					user.getNgoid().getNgoAddrId().getPhoneno());
 			god.setRole(UserRole.NGO);
-
+			god.setImg(user.getUsrPhoto().getImg());
 			return god;
 		} else if (user.getRole().equals(UserRole.POLICE)) {
 			God god = new God(user.getName(), user.getAddId().getCity(), user.getAddId().getState(),
@@ -271,6 +272,7 @@ public class AdminDao implements IAdminDao {
 					user.getPoId().getPoaddrId().getPhoneno());
 			god.setRole(UserRole.POLICE);
 
+			god.setImg(user.getUsrPhoto().getImg());
 			return god;
 
 		} else {
@@ -281,6 +283,8 @@ public class AdminDao implements IAdminDao {
 			god.setCity(user.getAddId().getCity());
 			god.setState(user.getAddId().getState());
 			god.setPhoneno(user.getAddId().getPhoneno());
+
+			god.setImg(user.getUsrPhoto().getImg());
 			return god;
 		}
 	}

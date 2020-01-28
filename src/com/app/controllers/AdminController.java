@@ -54,7 +54,7 @@ public class AdminController
 		}
 	}
 	@GetMapping("/user/{email}")
-	public ResponseEntity<?> getUserByName(@PathVariable String email)
+	public ResponseEntity<?> getUserByEmail(@PathVariable String email)
 	{
 		
 		try {

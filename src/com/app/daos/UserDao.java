@@ -1,5 +1,9 @@
 package com.app.daos;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -11,9 +15,11 @@ import com.app.pojos.God;
 import com.app.pojos.Ngo;
 import com.app.pojos.Photo;
 import com.app.pojos.Police;
+import com.app.pojos.Status;
 import com.app.pojos.User;
 import com.app.pojos.UserRole;
 import com.app.pojos.VerificationStatus;
+import com.app.pojos.Victim;
 
 @Repository
 public class UserDao implements IUser
@@ -90,6 +96,23 @@ public class UserDao implements IUser
 	{
 		String jpql = "select p from Photo p";
 		return sf.getCurrentSession().createQuery(jpql,Photo.class).getResultList();
+	}
+
+	@Override
+	public Integer[] getDatapoints()
+	{
+		String jpql ="select u from Victim u where u.status=:st";
+		List<Victim> resultList = sf.getCurrentSession().createQuery(jpql, Victim.class).setParameter("st",Status.MISSING).getResultList();
+		int count1 = resultList.size();
+		
+		String jpql1 ="select u from Victim u where u.status=:st";
+		List<Victim> resultList1 = sf.getCurrentSession().createQuery(jpql1, Victim.class).setParameter("st",Status.FOUND).getResultList();
+		int count2 = resultList1.size();
+		Integer[] arr = new Integer[2];
+		arr[0]=count1;
+		arr[1]=count2;
+		return arr;
+
 	}
 
 }

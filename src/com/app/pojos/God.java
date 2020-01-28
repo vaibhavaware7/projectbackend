@@ -43,7 +43,21 @@ public class God
 	private String deptphoneno;
 	
 	private byte[] img;
+	private Integer missingNumber;
+	private Integer foundNumber;
 	
+	public Integer getMissingNumber() {
+		return missingNumber;
+	}
+	public void setMissingNumber(Integer missingNumber) {
+		this.missingNumber = missingNumber;
+	}
+	public Integer getFoundNumber() {
+		return foundNumber;
+	}
+	public void setFoundNumber(Integer foundNumber) {
+		this.foundNumber = foundNumber;
+	}
 	public God(Integer appNo, String name, Integer age, Gendor gendor, Double height, String bgrp, Date dob,
 			Date missingDate, String complainantNo, String city, String state, String country, String phoneno,
 			byte[] img) {
