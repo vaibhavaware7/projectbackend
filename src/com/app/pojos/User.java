@@ -158,5 +158,10 @@ public class User
 		this.setNgoid(null);
 		ngo.setUserid(null);
 	}
+	public void addPhoto(Photo pho)
+	{
+		this.setUsrPhoto(pho);
+		pho.setuId(this);
+	}
 			
 }

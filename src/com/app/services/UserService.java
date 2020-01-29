@@ -1,10 +1,12 @@
 package com.app.services;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.daos.IUser;
 import com.app.pojos.God;
@@ -24,9 +26,10 @@ public class UserService implements IUserService
 	}
 
 	@Override
-	public void registerUser(God god) {
+	public void registerUser(God god,MultipartFile image) throws IOException
+	{
 		// TODO Auto-generated method stub
-		dao.registerUser(god);
+		dao.registerUser(god,image);
 	}
 
 	@Override

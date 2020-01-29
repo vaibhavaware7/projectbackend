@@ -1,5 +1,6 @@
 package com.app.daos;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.pojos.Address;
 import com.app.pojos.God;
@@ -38,7 +40,7 @@ public class UserDao implements IUser
 	}
 
 	@Override
-	public void registerUser(God god) 
+	public void registerUser(God god, MultipartFile image) throws IOException 
 	{
 		if(god.getRole().equals(UserRole.POLICE))
 		{
@@ -57,7 +59,12 @@ public class UserDao implements IUser
 					god.getDeptcountry(),god.getDeptphoneno());
 			sf.getCurrentSession().persist(poaddr);
 			
-			pol.addAddress(poaddr);			
+			pol.addAddress(poaddr);	
+			
+			Photo pho = new Photo();
+			pho.setImg(image.getBytes());
+			sf.getCurrentSession().persist(pho);
+			user.addPhoto(pho);
 		}
 		else if(god.getRole().equals(UserRole.NGO))
 		{
@@ -76,7 +83,11 @@ public class UserDao implements IUser
 					god.getDeptcountry(),god.getDeptphoneno());
 			sf.getCurrentSession().persist(ngoaddr);
 			
-			ngo.addAddress(ngoaddr);		
+			ngo.addAddress(ngoaddr);
+			Photo pho = new Photo();
+			pho.setImg(image.getBytes());
+			sf.getCurrentSession().persist(pho);
+			user.addPhoto(pho);		
 			
 		}
 		else

@@ -1,6 +1,5 @@
 package com.app.controllers;
 
-import java.text.ParseException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -21,8 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.app.pojos.God;
 import com.app.pojos.Photo;
 import com.app.pojos.User;
-import com.app.pojos.UserRole;
-import com.app.pojos.VerificationStatus;
 import com.app.services.IUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -78,13 +75,14 @@ public class UserController
 			
 	}
 	@PostMapping("/register")
-	public ResponseEntity<Boolean> registerUser(@RequestParam(value="god") String god1,@RequestParam(value="image") MultipartFile image )
+	public ResponseEntity<Boolean> registerUser(@RequestParam(value="god") String god1,
+			@RequestParam(value="image") MultipartFile image )
 	{
 		try
 		{
 			God god = new ObjectMapper().readValue(god1,God.class);
-			serv.registerUser(god);
-			 return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+			serv.registerUser(god,image);
+		 return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 			
 					
 		}
