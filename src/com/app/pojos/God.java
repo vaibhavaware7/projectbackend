@@ -46,6 +46,14 @@ public class God
 	private Integer missingNumber;
 	private Integer foundNumber;
 	
+	private Integer otp;
+	
+	public Integer getOtp() {
+		return otp;
+	}
+	public void setOtp(Integer otp) {
+		this.otp = otp;
+	}
 	public Integer getMissingNumber() {
 		return missingNumber;
 	}

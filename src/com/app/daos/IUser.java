@@ -19,4 +19,6 @@ public interface IUser
 	List<Photo> getAllPhotos();
 	
 	Integer[] getDatapoints();
+
+	void generateOtp(String email);
 }

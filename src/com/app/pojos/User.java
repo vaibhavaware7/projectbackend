@@ -163,5 +163,10 @@ public class User
 		this.setUsrPhoto(pho);
 		pho.setuId(this);
 	}
+	public void removePhoto(Photo usrPhoto) 
+	{
+		this.setUsrPhoto(null);
+		usrPhoto.setuId(null);
+	}
 			
 }

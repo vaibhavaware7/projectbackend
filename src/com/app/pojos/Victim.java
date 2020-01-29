@@ -161,4 +161,15 @@ public class Victim
 		this.setPhoId(pho);
 		pho.setvId(this);
 	}
+
+	public void removeAddress(Address addrid2)
+	{
+		this.setAddrid(null);
+		addrid2.setVicId(null);
+	}
+	public void removePhoto(Photo pho)
+	{
+		this.setPhoId(null);
+		pho.setvId(null);
+	}
 }

@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.app.pojos.Address;
 import com.app.pojos.God;
 import com.app.pojos.Photo;
+import com.app.pojos.PhotoOwner;
 import com.app.pojos.Status;
 import com.app.pojos.User;
 import com.app.pojos.Victim;
@@ -31,6 +32,7 @@ public class PoliceDao implements IPoliceDao
 		
 		Photo pho = new Photo();
 		pho.setImg(image.getBytes());
+		pho.setOwner(PhotoOwner.VICTIM);
 		sf.getCurrentSession().persist(pho);
 		vic.addPhoto(pho);
 		

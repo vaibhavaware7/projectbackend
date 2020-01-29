@@ -43,4 +43,10 @@ public class UserService implements IUserService
 		// TODO Auto-generated method stub
 		return dao.getDatapoints();
 	}
+
+	@Override
+	public void generateOtp(String email) {
+		// TODO Auto-generated method stub
+	 dao.generateOtp( email);
+	}
 }

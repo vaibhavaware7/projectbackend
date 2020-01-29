@@ -10,6 +10,7 @@ public class Photo
 	private byte[] img;
 	private User uId;
 	private Victim vId;
+	private PhotoOwner owner;
 	public Photo() {
 		System.out.println("in photo ctor");
 	}
@@ -46,6 +47,14 @@ public class Photo
 	}
 	public void setvId(Victim vId) {
 		this.vId = vId;
+	}
+	
+	@Enumerated(EnumType.STRING)
+	public PhotoOwner getOwner() {
+		return owner;
+	}
+	public void setOwner(PhotoOwner owner) {
+		this.owner = owner;
 	}
 	
 }

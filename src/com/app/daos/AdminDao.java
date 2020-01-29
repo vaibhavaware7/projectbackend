@@ -11,6 +11,7 @@ import com.app.pojos.Address;
 import com.app.pojos.God;
 import com.app.pojos.Message;
 import com.app.pojos.Ngo;
+import com.app.pojos.Photo;
 import com.app.pojos.Police;
 import com.app.pojos.User;
 import com.app.pojos.UserRole;
@@ -41,6 +42,11 @@ public class AdminDao implements IAdminDao {
 	@Override
 	public void removeCase(Integer appNo) {
 		Victim vic = sf.getCurrentSession().get(Victim.class, appNo);
+		sf.getCurrentSession().delete(vic.getAddrid());
+		vic.removeAddress(vic.getAddrid());
+		sf.getCurrentSession().delete(vic.getPhoId());
+		vic.removePhoto(vic.getPhoId());
+		
 		sf.getCurrentSession().delete(vic);
 	}
 
@@ -182,7 +188,10 @@ public class AdminDao implements IAdminDao {
 			sf.getCurrentSession().delete(user.getPoId().getPoaddrId());
 			police.removeAddress(police.getPoaddrId());
 			sf.getCurrentSession().delete(police);
-			user.removePolice(user.getPoId());;
+			user.removePolice(user.getPoId());
+			Photo photo = sf.getCurrentSession().get(Photo.class,user.getUsrPhoto().getpId());
+			sf.getCurrentSession().delete(photo);
+			user.removePhoto(user.getUsrPhoto());
 			sf.getCurrentSession().delete(user);
 
 		} else if (user.getRole().equals(UserRole.NGO)) {
@@ -205,6 +214,10 @@ public class AdminDao implements IAdminDao {
 			ngo.removeAddress(ngo.getNgoAddrId());
 			sf.getCurrentSession().delete(ngo);
 			user.removeNgo(user.getNgoid());
+
+			Photo photo = sf.getCurrentSession().get(Photo.class,user.getUsrPhoto().getpId());
+			sf.getCurrentSession().delete(photo);
+			user.removePhoto(user.getUsrPhoto());
 			sf.getCurrentSession().delete(user);
 			
 			}

@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +18,7 @@ import com.app.pojos.Address;
 import com.app.pojos.God;
 import com.app.pojos.Ngo;
 import com.app.pojos.Photo;
+import com.app.pojos.PhotoOwner;
 import com.app.pojos.Police;
 import com.app.pojos.Status;
 import com.app.pojos.User;
@@ -29,6 +32,10 @@ public class UserDao implements IUser
 	@Autowired
 	private SessionFactory sf;
 	
+	@Autowired
+	private JavaMailSender sender;
+	
+	public Integer otp;
 	@Override
 	public User validateUser(String email, String pass) 
 	{	
@@ -42,71 +49,77 @@ public class UserDao implements IUser
 	@Override
 	public void registerUser(God god, MultipartFile image) throws IOException 
 	{
-		if(god.getRole().equals(UserRole.POLICE))
+		if(god.getOtp().equals(this.otp))
 		{
-			User user = new User(god.getName(),god.getEmail(),god.getPassword(),god.getRole());
-			user.setStat(VerificationStatus.NV);
-			sf.getCurrentSession().persist(user);
-			Address usraddr = new Address(god.getCity(),god.getState(),god.getCountry(),god.getPhoneno());
-			sf.getCurrentSession().persist(usraddr);
-			user.addAddress(usraddr);
+			if(god.getRole().equals(UserRole.POLICE))
+			{
+				User user = new User(god.getName(),god.getEmail(),god.getPassword(),god.getRole());
+				user.setStat(VerificationStatus.NV);
+				sf.getCurrentSession().persist(user);
+				Address usraddr = new Address(god.getCity(),god.getState(),god.getCountry(),god.getPhoneno());
+				sf.getCurrentSession().persist(usraddr);
+				user.addAddress(usraddr);
+				
+				Police pol = new Police(god.getDeptname());
+				sf.getCurrentSession().persist(pol);
+				user.addPoliceStation(pol);
+				
+				Address poaddr = new Address(god.getDeptcity(),god.getDeptstate(),
+						god.getDeptcountry(),god.getDeptphoneno());
+				sf.getCurrentSession().persist(poaddr);
+				
+				pol.addAddress(poaddr);	
+				
+				Photo pho = new Photo();
+				pho.setImg(image.getBytes());
+				pho.setOwner(PhotoOwner.USER);
+				sf.getCurrentSession().persist(pho);
+				user.addPhoto(pho);
+			}
+			else if(god.getRole().equals(UserRole.NGO))
+			{
+				User user = new User(god.getName(),god.getEmail(),god.getPassword(),god.getRole());
+				user.setStat(VerificationStatus.NV);
+				sf.getCurrentSession().persist(user);
+				Address usraddr = new Address(god.getCity(),god.getState(),god.getCountry(),god.getPhoneno());
+				sf.getCurrentSession().persist(usraddr);
+				user.addAddress(usraddr);
 			
-			Police pol = new Police(god.getDeptname());
-			sf.getCurrentSession().persist(pol);
-			user.addPoliceStation(pol);
+				Ngo ngo = new Ngo(god.getDeptname());
+				sf.getCurrentSession().persist(ngo);
+				user.addNgoOfUser(ngo);
+				
+				Address ngoaddr = new Address(god.getDeptcity(),god.getDeptstate(),
+						god.getDeptcountry(),god.getDeptphoneno());
+				sf.getCurrentSession().persist(ngoaddr);
+				
+				ngo.addAddress(ngoaddr);
+				Photo pho = new Photo();
+				pho.setImg(image.getBytes());
+				pho.setOwner(PhotoOwner.USER);
+				sf.getCurrentSession().persist(pho);
+				user.addPhoto(pho);		
+				
+			}
+			else
+			{
+				User user = new User(god.getName(),god.getEmail(),god.getPassword(),god.getRole());
+				user.setStat(VerificationStatus.V);
+				sf.getCurrentSession().persist(user);
+				Address usraddr = new Address(god.getCity(),god.getState(),god.getCountry(),god.getPhoneno());
+				sf.getCurrentSession().persist(usraddr);
+				user.addAddress(usraddr);
 			
-			Address poaddr = new Address(god.getDeptcity(),god.getDeptstate(),
-					god.getDeptcountry(),god.getDeptphoneno());
-			sf.getCurrentSession().persist(poaddr);
-			
-			pol.addAddress(poaddr);	
-			
-			Photo pho = new Photo();
-			pho.setImg(image.getBytes());
-			sf.getCurrentSession().persist(pho);
-			user.addPhoto(pho);
-		}
-		else if(god.getRole().equals(UserRole.NGO))
-		{
-			User user = new User(god.getName(),god.getEmail(),god.getPassword(),god.getRole());
-			user.setStat(VerificationStatus.NV);
-			sf.getCurrentSession().persist(user);
-			Address usraddr = new Address(god.getCity(),god.getState(),god.getCountry(),god.getPhoneno());
-			sf.getCurrentSession().persist(usraddr);
-			user.addAddress(usraddr);
-		
-			Ngo ngo = new Ngo(god.getDeptname());
-			sf.getCurrentSession().persist(ngo);
-			user.addNgoOfUser(ngo);
-			
-			Address ngoaddr = new Address(god.getDeptcity(),god.getDeptstate(),
-					god.getDeptcountry(),god.getDeptphoneno());
-			sf.getCurrentSession().persist(ngoaddr);
-			
-			ngo.addAddress(ngoaddr);
-			Photo pho = new Photo();
-			pho.setImg(image.getBytes());
-			sf.getCurrentSession().persist(pho);
-			user.addPhoto(pho);		
-			
-		}
-		else
-		{
-			User user = new User(god.getName(),god.getEmail(),god.getPassword(),god.getRole());
-			user.setStat(VerificationStatus.V);
-			sf.getCurrentSession().persist(user);
-			Address usraddr = new Address(god.getCity(),god.getState(),god.getCountry(),god.getPhoneno());
-			sf.getCurrentSession().persist(usraddr);
-			user.addAddress(usraddr);
-		
+			}
+
 		}
 	}
 
 	@Override
 	public List<Photo> getAllPhotos() 
 	{
-		String jpql = "select p from Photo p";
-		return sf.getCurrentSession().createQuery(jpql,Photo.class).getResultList();
+		String jpql = "select p from Photo p where p.owner=:ow";
+		return sf.getCurrentSession().createQuery(jpql,Photo.class).setParameter("ow",PhotoOwner.VICTIM).getResultList();
 	}
 
 	@Override
@@ -124,6 +137,20 @@ public class UserDao implements IUser
 		arr[1]=count2;
 		return arr;
 
+	}
+
+	@Override
+	public void generateOtp(String email) 
+	{
+		Integer otp1 = (int) ((Math.random()*1000)+2379);
+		SimpleMailMessage msg = new SimpleMailMessage();
+		msg.setTo(email+".com");
+		msg.setSubject("OTP For Registration");
+		String msgText= "Your OTP For Registration is "+ otp1.toString();
+		msg.setText(msgText);
+		sender.send(msg);
+		this.otp=otp1;
+		
 	}
 
 }

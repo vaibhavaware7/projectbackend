@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,8 +82,9 @@ public class UserController
 		try
 		{
 			God god = new ObjectMapper().readValue(god1,God.class);
+			
 			serv.registerUser(god,image);
-		 return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 			
 					
 		}
@@ -106,6 +108,19 @@ public class UserController
 			e.printStackTrace();
 
 			return new ResponseEntity<>( HttpStatus.OK);
+		}
+	}
+	@GetMapping("/generate/{email}")
+	public ResponseEntity<?> generateOtp(@PathVariable String email)
+	{
+		try {
+			 serv.generateOtp(email);
+			return new ResponseEntity<>( HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			return new ResponseEntity<>( HttpStatus.NO_CONTENT);
 		}
 	}
 }
